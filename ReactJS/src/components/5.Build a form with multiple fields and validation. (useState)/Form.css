@@ -1,0 +1,68 @@
+/* Center main container */
+.form-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Form box styling */
+.form-box {
+  width: 350px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+/* Each label + input group */
+.form-group {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Inputs style */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"] {
+  padding: 8px;
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #007bff;
+}
+
+/* Radio button group */
+.radio-group {
+  display: flex;
+  gap: 10px;
+}
+
+.radio-group label {
+  font-weight: normal;
+}
+
+/* Submit button */
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  font-size: 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
