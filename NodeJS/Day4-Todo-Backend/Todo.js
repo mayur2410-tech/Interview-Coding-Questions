@@ -38,4 +38,28 @@ router.post('/add/todo',(req,res)=>{
     }
 })
 
+router.put("/update/todo/:id",(req,res)=>{
+    try{
+        const {title,priority,status}= req.body;
+        const todos = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
+        const todoId = req.params.id;
+
+        const findTodo = todos.find(todo => todo.id == todoId);
+        if(!findTodo){
+            return res.status(400).json({message:"Todo not Found"});
+        }
+
+        if(title) findTodo.title = title;
+        if(priority) findTodo.priority = priority;
+        if(status) findTodo.status = status;
+
+        fs.writeFileSync(dbPath,JSON.stringify(todos));
+        return res.status(200).json({message:"to do update successfully"});
+
+
+    }catch(error){
+        return res.status(500).json({message:"Failed to update",error})
+    }
+})
+
 module.exports = router
