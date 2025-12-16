@@ -6,23 +6,39 @@ const path = require("path")
 const dbPath = path.join(__dirname,'./Movies.json');
 
 router.get('/get/movies',(req,res)=>{
-    const movie = JSON.parse(fs.readFileSync(dbPath,'utf-8'));
-    res.json(movie);
+    try{
+          const movie = JSON.parse(fs.readFileSync(dbPath,'utf-8'));
+    return res.status(200).json({message:"success",movie});
+    }catch(error){
+        return res.status(500).json({message:"failed to read",error})
+    }
+  
 })
 
 router.post('/movies', (req, res) => {
-    const { id, title, year } = req.body;
+    try{
+        const movies = JSON.parse(fs.readFileSync(dbPath,'utf-8'));
+        const { id, title, year } = req.body;
+        if(!title|| !year  ||!id){
+            return res.status(400).json({message:"All fields are required"});
+        }
+        if(typeof title!="string" || typeof year!='number'){
+            return res.status(400).json({message:"Title and year should be in string and number"});
+        }
+    
 
-    const data = { id, title, year };
+    const newMovies = { id, title, year };
 
-    const fileData = fs.readFileSync(dbPath, 'utf8');
-    const json = fileData ? JSON.parse(fileData) : [];
+   movies.push(newMovies)
 
-    json.push(data);
+    fs.writeFileSync(dbPath, JSON.stringify(movies));
 
-    fs.writeFileSync(dbPath, JSON.stringify(json, null, 2));
+    return res.status(201).json({message:"movei added succesfully"});
 
-    res.send("Data saved");
+    }catch(error){
+        return res.status(500).json({message:"eroor ",error})
+    }
+    
 });
 
 
