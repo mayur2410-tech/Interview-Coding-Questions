@@ -62,4 +62,22 @@ router.put("/update/todo/:id",(req,res)=>{
     }
 })
 
+
+router.delete("/delete/todo/:id",(req,res)=>{
+    try{
+
+        const todos = JSON.parse(fs.readFileSync(dbPath, "utf-8"));
+        // console.log("todos",todos)
+        const todoId  = Number(req.params.id);
+        // console.log("todoid",todoId)
+        const toDel = todos.filter(todo => todo.id == todoId)
+        const filterTodo = todos.filter(todo => todo.id !== todoId);
+        console.log("filterTodo",filterTodo)
+        fs.writeFileSync(dbPath, JSON.stringify(filterTodo));
+        return res.status(200).json({message:"Delete SuccessFully",toDel});
+    }catch(error){
+        return res.status(500).json({message:"Failded to delete",error})
+    }
+})
+
 module.exports = router
