@@ -8,6 +8,17 @@ const Fetch = () => {
     const [loading,setLoading]=useState(false);
     const [page,setPage]=useState(1);
     const [limit,setLimit]=useState(5)
+    const[sortOrder,setSortOrder]=useState('asc')
+
+    const sortedUser = [...data].sort((a,b)=>{
+        const nameA = a.firstName.toLowerCase();
+        const nameB = b.lastName.toLowerCase();
+        if(sortOrder=='asc'){
+         return   nameA.localeCompare(nameB)
+        }else{
+           return nameB.localeCompare(nameA)
+        }
+    })
    
 
     const startIndex = (page-1) * limit
@@ -39,7 +50,7 @@ const Fetch = () => {
 
     useEffect(()=>{
             setPage(1)
-    },[limit])
+    },[limit,sortOrder])
 
     if(loading){
         return (
@@ -52,8 +63,18 @@ const Fetch = () => {
 
   return (
     <div>
+            <div style={{display:'flex',flexDirection:"row",justifyContent:"space-between"}}>
+        <h1>User Data</h1> 
+        <select style={{borderRadius:"10px",height:'100%',marginTop:"20px"}}
+        value={sortOrder}
+        onChange={(e)=>setSortOrder(e.target.value)}
+        >
+            Sort By:
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+            </select>  
 
-        <h1>User Data</h1>
+            </div>
         {currentUser.map((item)=>(
             <div key={item.id} style={{border:"2px solid black",borderRadius:"30px",padding:"10px" ,display:"flex",gap:"45px"}}>
                 <p>Id:{item.id}</p>
