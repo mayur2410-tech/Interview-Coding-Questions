@@ -8,9 +8,18 @@ const Fetch = () => {
     const [loading,setLoading]=useState(false);
     const [page,setPage]=useState(1);
     const [limit,setLimit]=useState(5)
+    const [search,setSearch]=useState('');
     const[sortOrder,setSortOrder]=useState('asc')
 
-    const sortedUser = [...data].sort((a,b)=>{
+    // searching
+const filterData = data.filter((user)=>{
+    const fullName =`${user.firstName} ${user.lastName}`.toLowerCase() 
+    return fullName.includes(search.toLowerCase())
+})
+
+
+// sort data asending or descending 
+    const sortedUser = [...filterData].sort((a,b)=>{
         const nameA = a.firstName.toLowerCase();
         const nameB = b.lastName.toLowerCase();
         if(sortOrder=='asc'){
@@ -19,15 +28,16 @@ const Fetch = () => {
            return nameB.localeCompare(nameA)
         }
     })
+
+
+
    
 
     const startIndex = (page-1) * limit
     const endIndex = startIndex + limit
-    const currentUser = data.slice(startIndex,endIndex)
+    const currentUser = sortedUser.slice(startIndex,endIndex)
 
     const totalPage = Math.ceil(data.length/limit)
-   
-
 
     const fetchApi = async ()=>{
         try{
@@ -63,6 +73,15 @@ const Fetch = () => {
 
   return (
     <div>
+
+    <div style={{marginTop:"10px",marginLeft:"40%"}}>
+        <label htmlFor="">Search By Name : </label>
+        <input type="text"
+        value={search}
+        style={{borderRadius:"10px",height:"25px"}}
+        onChange={(e)=>setSearch(e.target.value)}
+        />
+    </div>
             <div style={{display:'flex',flexDirection:"row",justifyContent:"space-between"}}>
         <h1>User Data</h1> 
         <select style={{borderRadius:"10px",height:'100%',marginTop:"20px"}}
