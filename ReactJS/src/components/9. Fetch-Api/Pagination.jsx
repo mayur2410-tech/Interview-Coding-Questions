@@ -10,7 +10,7 @@ const Pagination = ({totalPage,currentPage,onPageChange,limit,onLimitChange}) =>
         <div style={{display:"flex"}}>
 
         
-             <p>Per Page:</p>
+             <p >Per Page:</p>
                 <select value={limit} onChange={(e)=>onLimitChange(Number(e.target.value))}>
                     Users per Page:
                     <option value="5">5</option>
