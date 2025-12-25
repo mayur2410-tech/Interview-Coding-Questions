@@ -3,6 +3,8 @@ const crud = require('./Day1-GET-POST/crud')
 const movies = require('./Day3-Movies-CRUD/Movies')
 const todo = require("./Day4-Todo-Backend/Todo.js");
 const app = express();
+const cors = require("cors")
+app.use(cors())
 app.use(express.json());
 
 
