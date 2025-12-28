@@ -7,6 +7,7 @@ const Navbar = () => {
       <div style={{display:"flex",border:"2px solid black ",height:"60px",alignItems:"center", justifyContent:'space-around'}}>
         <li><Link to='/counter'>Counter</Link></li>
         <li><Link to='/todo'>Todo</Link></li>
+        <li><Link to='/search'>Search UI</Link></li>
       </div>
     </div>
   )
