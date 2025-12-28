@@ -1,8 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 
 const Todo = () => {
     const[input,setInput]=useState("")
     const[todo,setTodo]=useState([])
+
+    //get from local storage 
+
+    useEffect(()=>{
+      const saveTodos = JSON.parse(localStorage.getItem("todos"))
+      if(saveTodos){
+        console.log("come from local storage:",saveTodos)
+        setTodo(saveTodos)
+      }
+    },[])
+
+    //add todos to local storage
+    useEffect(()=>{
+      localStorage.setItem("todos", JSON.stringify(todo))
+      console.log("Save to local storage : ",todo)
+    },[todo])
 
 
      function addTodo() {
