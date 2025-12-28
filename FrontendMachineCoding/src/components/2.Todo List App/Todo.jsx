@@ -4,8 +4,17 @@ const Todo = () => {
     const[input,setInput]=useState("")
     const[todo,setTodo]=useState([])
 
-    //get from local storage 
+     //add todos to local storage
+    useEffect(()=>{
+      if(todo.length > 0){
 
+        localStorage.setItem("todos", JSON.stringify(todo))
+        console.log("Save to local storage : ",todo)
+      }
+    },[todo])
+
+
+    //get from local storage 
     useEffect(()=>{
       const saveTodos = JSON.parse(localStorage.getItem("todos"))
       if(saveTodos){
@@ -14,11 +23,7 @@ const Todo = () => {
       }
     },[])
 
-    //add todos to local storage
-    useEffect(()=>{
-      localStorage.setItem("todos", JSON.stringify(todo))
-      console.log("Save to local storage : ",todo)
-    },[todo])
+   
 
 
      function addTodo() {
