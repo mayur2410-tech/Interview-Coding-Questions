@@ -41,7 +41,7 @@ app.post('/notes',(req,res)=>{
 })
 
 
-app.put('/notes/:id',(req,res)=>{
+app.patch('/notes/:id',(req,res)=>{
     try{
     const id = Number(req.params.id)
     const note = JSON.parse(fs.readFileSync(db,'utf-8'))
@@ -57,6 +57,39 @@ app.put('/notes/:id',(req,res)=>{
             return res.status(200).json({message:"Note update successfully"})
     }catch(error){
            return res.status(500).json({message:"failed to read file",error})
+
+    }
+})
+
+app.put('/notes/:id',(req,res)=>{
+    try{
+         
+        const noteId =  Number(req.params.id)
+
+        const note = JSON.parse(fs.readFileSync(db,'utf-8'))
+
+        const {title,content}= req.body
+        if(!title || !content){
+            return res.status(400).json({message:"All fields are required"})
+        }
+
+        const index = note.findIndex(n=>n.id==noteId)
+        if(index===-1){
+            return res.status(404).json({message:"not found "})
+        }
+
+        note[index]={
+            id:noteId,title,content
+        }
+            fs.writeFileSync(db,JSON.stringify(note))
+            return res.status(200).json({message:"Note update successfully",note: note[index]})
+
+
+
+
+
+    }catch(error){
+           return res.status(500).json({message:"failed to read file",error:error.message})
 
     }
 })
