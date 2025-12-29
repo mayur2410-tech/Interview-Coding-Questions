@@ -2,6 +2,19 @@ const express = require('express')
 const app = express();
 app.use(express.json())
 
+//logger middleware
+
+const logger = (req,res,next)=>{
+    const method = req.method ;
+    const url = req.url
+    const time = new Date().toISOString()
+    
+    console.log(`time: ${time},methods: ${method},url: ${url}`)
+    next();
+}
+
+app.use(logger)
+
 let users=[]
 let id=1;
 
