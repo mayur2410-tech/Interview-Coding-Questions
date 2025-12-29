@@ -13,6 +13,7 @@ const Navbar = () => {
         <li><Link to='/theme'>Theme</Link></li>
         <li><Link to='/page'>Pagination</Link></li>
         <li><Link to='/model'>Model</Link></li>
+        <li><Link to='/timer'>Timer</Link></li>
       </div>
     </div>
   )

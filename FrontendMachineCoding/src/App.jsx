@@ -9,6 +9,7 @@ import Tabs from './components/5. Tabs Component/Tabs'
 import Theme from './components/6. Theme Toggle/Theme'
 import Page from './components/7.Pagination Component/Page'
 import ModelParent from './components/8. Modal Component/ModelParent'
+import Timer from './components/9.TImer/Timer'
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path='theme' element={<Theme />} />
         <Route path='page' element={<Page />} />
         <Route path='model' element={<ModelParent />} />
+        <Route path='timer' element={<Timer />} />
       </Routes>
       </BrowserRouter>
     </div>
