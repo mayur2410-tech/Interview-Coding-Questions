@@ -7,6 +7,7 @@ import Search from './components/3. Search Filter UI/Search'
 import Form from './components/4. Form Validation/Form'
 import Tabs from './components/5. Tabs Component/Tabs'
 import Theme from './components/6. Theme Toggle/Theme'
+import Page from './components/7.Pagination Component/Page'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path='form' element={<Form />} />
         <Route path='tabs' element={<Tabs />} />
         <Route path='theme' element={<Theme />} />
+        <Route path='page' element={<Page />} />
       </Routes>
       </BrowserRouter>
     </div>

@@ -11,6 +11,7 @@ const Navbar = () => {
         <li><Link to='/form'>Form Validation</Link></li>
         <li><Link to='/tabs'>Tabs</Link></li>
         <li><Link to='/theme'>Theme</Link></li>
+        <li><Link to='/page'>Pagination</Link></li>
       </div>
     </div>
   )
