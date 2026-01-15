@@ -4,9 +4,9 @@ const { Schema, model } = require("mongoose");
 // user model
 const userSchema = new Schema({
     name: String,
-    email: { tyep: String, unique: true },
+    email: { type: String, unique: true },
     password: String,
-    role: { enum: ["teacher", "student"] }
+    role: { type:String ,enum: ["teacher", "student"] }
 })
 
 
@@ -29,9 +29,12 @@ const classSchema = new Schema({
 const attendenceModel = new Schema({
     classId: { type: Schema.Types.ObjectId, ref: "Class" },
     studentId: { type: Schema.Types.ObjectId, ref: "Users" },
-    status: { enum: ['present', "absent"] }
+    status: { type:String,enum: ['present', "absent"] }
 })
 
-export const UserModel = model('Users', userSchema);
-export const ClassModel = model('Class', classSchema);
-export const AttendenceModel = model('Attendence', attendenceModel);
+module.exports={
+
+    UserModel : model('Users', userSchema),
+    ClassModel :  model('Class', classSchema),
+    AttendenceModel  : model('Attendence', attendenceModel) 
+}
