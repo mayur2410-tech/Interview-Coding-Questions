@@ -67,7 +67,13 @@ const addStudent = async (req,res)=>{
         classDB.studentIds.push(studentIds);
         await classDB.save();
 
-        return res.status(200).json({success:true,classDB})
+        return res.status(200).json({success:true,data:{
+            _id:classDB._id,
+            className:classDB.className,
+            teacherId:classDB.teacherId,
+            studentIds : classDB.studentIds
+
+        }})
 
 
     }catch(error){
@@ -75,4 +81,24 @@ const addStudent = async (req,res)=>{
     }
 }
 
-module.exports = {createClass,addStudent}
+
+const getClass = async (req,res) =>{
+    try{
+            const classId = req.params.id;
+            const classDB = await ClassModel.findById(classId).populate("studentIds","name email")
+            if(!classDB){
+                return res.status(404).json({success:false,error:"Class not found"})
+            }
+            if(classDB.teacherId.toString() == req.user._id.toString() || classDB.studentIds.some(s=>s._id.toString()==req.user._id.toString())){
+                return res.status(200).json({success:true,data:classDB})
+            }else{
+                  return res.status(403).json({success:false,error:"Forbidden, no authorization for this class"})
+
+            }
+    }catch(error){
+       return res.status(500).json({success:false,error:error.message})
+
+    }
+}
+
+module.exports = {createClass,addStudent,getClass}
