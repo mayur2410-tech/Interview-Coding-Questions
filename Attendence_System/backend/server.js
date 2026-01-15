@@ -9,9 +9,11 @@ const {dbConnection} = require('./config/db.js')
 dbConnection();
 app.use(express.json())
 
-const authRoutes = require('./routes/authRoutes.js')
+const authRoutes = require('./routes/authRoutes/authRoutes.js')
+const classRoutes = require("./routes/classRoutes/classRoutes.js")
 
 app.use('/auth',authRoutes)
+app.use('/teacher',classRoutes)
 
 app.listen(port,()=>{
 console.log(`server is running on port${port}`)

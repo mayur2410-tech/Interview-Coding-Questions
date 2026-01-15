@@ -24,11 +24,12 @@ const signUp = async (req, res) => {
         }
         //now create new user
         const hashPassword = await bcrypt.hash(password, 10)
+        // console.log("hashPassword",hashPassword)
 
         const newUser = await UserModel.create({
             name,
             email,
-            hashPassword,
+            password: hashPassword,
             role
         })
 
@@ -36,8 +37,6 @@ const signUp = async (req, res) => {
             _id:newUser._id,
             name:newUser.name,
             email:newUser.email,
-            password:newUser.hashPassword,
-            
         } })
     } catch (error) {
         return res.status(500).json({ message: "Server Error", error: error.message })
@@ -58,13 +57,14 @@ const login = async (req,res)=>{
         const {email,password} = parsed.data;
 
         const user = await UserModel.findOne({email});
+        // console.log("User",user.password)
         if(!user){
             return res.status(400).json({
       success: false,
       error: "Invalid email or password"
 })}
 
-        const isMatchPassword = await  bcrypt.compare(password, user.password);
+        const isMatchPassword =  bcrypt.compare(password, user.password);
         if(!isMatchPassword){
             return res.status(400).json({
       success: false,
@@ -82,4 +82,17 @@ const login = async (req,res)=>{
    
 }
 
-module.exports = {signUp, login }
+
+const me = async(req,res)=>{
+try{
+    if(!req.user){
+        return res.status(401).json({success:false,error:"Unauthorized, token missing or invalid"})
+    }
+
+    return res.status(200).json({success:true,user:req.user})
+
+}catch(error){
+    return res.status(500).json({success:false,message:error.message})
+}
+}
+module.exports = {signUp, login ,me}

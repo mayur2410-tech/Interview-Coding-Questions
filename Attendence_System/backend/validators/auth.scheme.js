@@ -13,4 +13,8 @@ const loginSchema = z.object({
     password:z.string().min(6)
 })
 
-module.exports = {signupSchema,loginSchema}
+const classScheme = z.object({
+    className:z.string()
+})
+
+module.exports = {signupSchema,loginSchema,classScheme}
