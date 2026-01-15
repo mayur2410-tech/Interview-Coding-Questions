@@ -13,8 +13,14 @@ const loginSchema = z.object({
     password:z.string().min(6)
 })
 
+//create class
 const classScheme = z.object({
     className:z.string()
 })
 
-module.exports = {signupSchema,loginSchema,classScheme}
+//add student to class
+const addStudentSchema = z.object({
+    studentIds: z.string()
+})
+
+module.exports = {signupSchema,loginSchema,classScheme, addStudentSchema}

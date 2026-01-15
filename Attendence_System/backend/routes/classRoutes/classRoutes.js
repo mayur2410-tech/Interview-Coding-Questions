@@ -1,9 +1,9 @@
 const express = require("express");
 const {authMiddleware,roleMiddleware} = require("../../middleware/auth.middleware");
-const { createClass } = require("../../controller/Class/Class");
-const { route } = require("../authRoutes/authRoutes");
+const { createClass,addStudent } = require("../../controller/Class/Class");
 const router = express.Router();
 
-router.post('/create-class',authMiddleware,roleMiddleware("teacher"),createClass)
+router.post('/class',authMiddleware,roleMiddleware("teacher"),createClass)
+router.post('/class/:id/add-student',authMiddleware,roleMiddleware("teacher"),addStudent)
 
 module.exports = router
