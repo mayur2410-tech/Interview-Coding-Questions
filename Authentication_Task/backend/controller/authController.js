@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken")
 const { UserModel } = require("../model/user");
 const { sendOtpService } = require("../services/msg91");
+const nodemailer = require("nodemailer")
 const { sendOtpSchema, registerSchema, verifyOtpSchema } = require("../validators/user.schema");
 const user = require("../model/user");
 
@@ -62,6 +63,26 @@ try{
         phone,
         isVerified:false
     })
+
+    //send mail to newUser
+    const transporter = nodemailer.createTransport({
+        service:"Gmail",
+        auth:{
+            user:process.env.EMAIL_USER,
+            pass:process.env.EMAIL_PASS
+        },
+        tls:{
+            rejectUnauthorized:false
+        }
+    })
+       const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to:email,
+        subject:"Welcome to Auth System",
+        html: `Welcome ${name} your registration have been done successfully`
+       } 
+
+       await transporter.sendMail(mailOptions)
 
     return res.status(201).json({success:true,data: {
   id: newUser._id,
