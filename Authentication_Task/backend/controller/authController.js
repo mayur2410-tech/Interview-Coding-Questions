@@ -3,7 +3,7 @@ const { UserModel } = require("../model/user");
 const { sendOtpService } = require("../services/msg91");
 const nodemailer = require("nodemailer")
 const { sendOtpSchema, registerSchema, verifyOtpSchema } = require("../validators/user.schema");
-const user = require("../model/user");
+const bcrypt = require("bcrypt")
 
 
 const sendOtp = async (req,res)=>{
@@ -24,8 +24,10 @@ const sendOtp = async (req,res)=>{
         const otp = Math.floor(100000 + Math.random()* 900000).toString();
         const otpExpireIn = new Date(Date.now()+2*60*1000);
 
+        const hashOtp = await bcrypt.hash(otp,10)
+
         //now save in database otp and otpExpire time 
-        user.otp = otp;
+        user.otp = hashOtp;
         user.otpExpiresAt = otpExpireIn
         await user.save();
 
@@ -111,7 +113,9 @@ const verifyOtp = async (req,res)=>{
             return res.status(404).json({success:false,error:"User not found"})
         }
 
-        if(user.otp !== otp){
+
+        const verifyOtp = await bcrypt.compare(otp,user.otp)
+        if(!verifyOtp){
             return res.status(400).json({success:false,error:"Invalid otp"});
         }
 
