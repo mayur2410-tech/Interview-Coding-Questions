@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken")
 const { UserModel } = require("../model/user");
 const { sendOtpService } = require("../services/msg91");
-const { sendOtpSchema, registerSchema, verifyOtpSchema } = require("../validators/user.schema")
+const { sendOtpSchema, registerSchema, verifyOtpSchema } = require("../validators/user.schema");
+const user = require("../model/user");
 
 
 const sendOtp = async (req,res)=>{
@@ -97,13 +98,26 @@ const verifyOtp = async (req,res)=>{
         if(user.otpExpiresAt < currentTime){
             return res.status(400).json({success:false,error:"Otp get expired"})
         }
+
+        const token = jwt.sign({token:user._id}, process.env.JWT_SECRET, {expiresIn:'30d'})
+
+
+        //remove oldest device
+        if(user.devices.length >=2){
+            user.devices.shift();
+        }
         
+            //add new device
+            user.devices.push({
+                token,
+                loginAt:new Date()
+            })
+
          user.isVerified = true;
          user.otp = null;
          user.otpExpiresAt = null;
          await user.save();
 
-         const token = jwt.sign({token:user._id}, process.env.JWT_SECRET, {expiresIn:'30d'})
         
         return res.status(200).json({success:true,message:"otp verify successfully",data:token})
 
@@ -113,4 +127,20 @@ const verifyOtp = async (req,res)=>{
     }
 }
 
-module.exports = {sendOtp,registerUser,verifyOtp};
+
+const logOut = async(req,res)=>{
+    try{
+        req.user = user
+        user.token = token
+
+        user.devices = user.devices.filter((d)=>d.token !== token);
+        await user.save()
+
+        return res.status(200).json({success:true,data:"Logout Successfully"})
+
+    }catch(error){
+        return res.status(500).json({success:false,error:error.message})
+    }
+}
+
+module.exports = {sendOtp,registerUser,verifyOtp,logOut};
