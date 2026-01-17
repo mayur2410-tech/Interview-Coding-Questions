@@ -1,4 +1,5 @@
 const { UserModel } = require("../model/user");
+const jwt = require("jsonwebtoken")
 
 const authMiddleware = async(req,res,next)=>{
     try{
@@ -24,9 +25,7 @@ const authMiddleware = async(req,res,next)=>{
         next()
 
     }catch(error){
-        return res.status(401).json({
-      error: "Invalid or expired token",
-    })
+        return res.status(401).json({ error: "Invalid or expired token",error:error.message})
 }
 }
 

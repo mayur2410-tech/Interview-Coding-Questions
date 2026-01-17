@@ -140,7 +140,7 @@ const verifyOtp = async (req,res)=>{
          await user.save();
 
         
-        return res.status(200).json({success:true,message:"otp verify successfully",data:token})
+        return res.status(200).json({success:true,message:"otp verify successfully",token:token})
 
 
     }catch(error){
@@ -151,8 +151,8 @@ const verifyOtp = async (req,res)=>{
 
 const logOut = async(req,res)=>{
     try{
-        req.user = user
-        user.token = token
+      const user =  req.user 
+       const token = req.token 
 
         user.devices = user.devices.filter((d)=>d.token !== token);
         await user.save()
